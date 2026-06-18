@@ -1,0 +1,6 @@
+{
+  "name": "Epilogue '26 Table QR Experience",
+  "description": "A premium mobile-first interactive table QR experience and game portal for Epilogue '26 music festival.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
