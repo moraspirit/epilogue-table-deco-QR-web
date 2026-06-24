@@ -13,8 +13,6 @@ export default function ScreenArtists() {
       <h2 className="text-5xl md:text-6xl font-display font-black text-white uppercase tracking-widest leading-[1.3]">
         BNS
         <br />
-        <span className="text-neon-purple text-glow-purple">UMARIA</span>
-        <br />
         DADDY
       </h2>
     </div>

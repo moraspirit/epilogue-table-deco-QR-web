@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { 
   Ticket, 
-  Car, 
+  Footprints, 
   Brain, 
   Compass, 
   Sparkles, 
@@ -27,14 +27,14 @@ export default function ScreenHub({ onResetIntro }: ScreenHubProps) {
       url: 'https://mora-epilogue-tickets.example.com/purchase',
     },
     {
-      id: 'racing',
-      title: 'RACING EVENT',
-      iconName: 'Car',
+      id: 'runner',
+      title: 'RUNNER GAME',
+      iconName: 'Footprints',
       description: 'Rank Top 10 to win a FREE premium ticket.',
       ctaText: 'PLAY & WIN',
       accentColor: 'text-neon-blue border-neon-blue/30 bg-neon-blue/5',
       glowClass: 'glow-blue',
-      url: 'https://mora-epilogue-racing-game.example.com/play',
+      url: 'https://go.moraspirit.com/run-game',
     },
     {
       id: 'quiz',
@@ -44,7 +44,7 @@ export default function ScreenHub({ onResetIntro }: ScreenHubProps) {
       ctaText: 'START & WIN',
       accentColor: 'text-neon-purple border-neon-purple/30 bg-neon-purple/5',
       glowClass: 'glow-purple',
-      url: 'https://mora-epilogue-quiz.example.com/start',
+      url: 'https://go.moraspirit.com/quizes',
     },
     {
       id: 'treasure',
@@ -54,7 +54,7 @@ export default function ScreenHub({ onResetIntro }: ScreenHubProps) {
       ctaText: 'HUNT & WIN',
       accentColor: 'text-neon-pink border-neon-pink/30 bg-neon-pink/5',
       glowClass: 'glow-pink',
-      url: 'https://mora-epilogue-treasure-hunt.example.com/join',
+      url: 'https://go.moraspirit.com/ctf',
     },
   ];
 
@@ -66,8 +66,8 @@ export default function ScreenHub({ onResetIntro }: ScreenHubProps) {
     switch (name) {
       case 'Ticket':
         return <Ticket className={`${cls} text-neon-green`} />;
-      case 'Car':
-        return <Car className={`${cls} text-neon-blue animate-pulse`} />;
+      case 'Footprints':
+        return <Footprints className={`${cls} text-neon-blue animate-pulse`} />;
       case 'Brain':
         return <Brain className={`${cls} text-neon-purple animate-pulse`} />;
       case 'Compass':
@@ -112,7 +112,7 @@ export default function ScreenHub({ onResetIntro }: ScreenHubProps) {
             >
               {/* Halos */}
               <div className={`absolute top-0 right-0 w-24 h-24 rounded-full opacity-5 group-hover:opacity-15 transition-opacity blur-[20px] ${
-                card.id === 'tickets' ? 'bg-neon-green' : card.id === 'racing' ? 'bg-neon-blue' : card.id === 'quiz' ? 'bg-neon-purple' : 'bg-neon-pink'
+                card.id === 'tickets' ? 'bg-neon-green' : card.id === 'runner' ? 'bg-neon-blue' : card.id === 'quiz' ? 'bg-neon-purple' : 'bg-neon-pink'
               }`} />
 
               <div className="flex justify-between items-start">

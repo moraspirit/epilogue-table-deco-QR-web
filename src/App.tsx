@@ -8,8 +8,6 @@ import ScreenDetails from './components/ScreenDetails';
 import ScreenCreative from './components/ScreenCreative';
 import ScreenTeaser from './components/ScreenTeaser';
 import ScreenHub from './components/ScreenHub';
-import { ChevronRight } from 'lucide-react';
-
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<ScreenId>('arrival');
   const [synthEnabled, setSynthEnabled] = useState(false);
@@ -43,10 +41,6 @@ export default function App() {
     return () => clearTimeout(timeout);
   }, [currentScreen]);
 
-  const handleSkip = () => {
-    setCurrentScreen('hub');
-  };
-
   const handleResetIntro = () => {
     setCurrentScreen('arrival');
   };
@@ -76,26 +70,6 @@ export default function App() {
       />
 
       <div className="absolute inset-0 pointer-events-none select-none bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(3,1,11,0.55))] z-20" />
-
-      {/* Skip Button */}
-      <AnimatePresence>
-        {currentScreen !== 'hub' && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="absolute top-5 left-5 z-40"
-          >
-            <button
-              onClick={handleSkip}
-              className="px-3.5 py-1.5 rounded-full border border-neon-green/30 bg-neon-green/5 hover:bg-neon-green/15 active:scale-95 transition-all text-[11px] font-mono font-bold tracking-widest text-neon-green hover:text-white flex items-center gap-1 cursor-pointer text-glow-green shadow-[0_0_15px_rgba(5,255,96,0.15)]"
-            >
-              <span>SKIP VIDEO</span>
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* Screen Router Grid with Absolute Overlapping Video-like Crossfades */}
       {/* Notice mode="wait" is intentionally omitted to allow simultaneous fade-in/out */}

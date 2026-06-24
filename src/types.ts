@@ -3,7 +3,7 @@ export type ScreenId = 'arrival' | 'artists' | 'details' | 'creative' | 'teaser'
 export interface HubCard {
   id: string;
   title: string;
-  iconName: 'Ticket' | 'Car' | 'Brain' | 'Sparkles' | 'Trophy' | 'Compass';
+  iconName: 'Ticket' | 'Footprints' | 'Brain' | 'Sparkles' | 'Trophy' | 'Compass';
   description: string;
   ctaText: string;
   accentColor: string; // Tailwinds colors: e.g. text-neon-pink, border-neon-pink/30
