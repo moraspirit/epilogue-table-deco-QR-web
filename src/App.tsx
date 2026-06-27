@@ -59,7 +59,7 @@ export default function App() {
   };
 
   return (
-    <div className="w-full h-full relative overflow-hidden bg-dark-bg text-slate-100 font-sans flex flex-col justify-between">
+    <div className="w-full h-full relative overflow-auto bg-dark-bg text-slate-100 font-sans flex flex-col justify-between">
       
       {/* Persistent Visualizer Background */}
       <AmbientWaves

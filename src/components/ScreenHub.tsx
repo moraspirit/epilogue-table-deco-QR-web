@@ -78,7 +78,7 @@ export default function ScreenHub({ onResetIntro }: ScreenHubProps) {
   };
 
   return (
-    <div className="w-full h-auto sm:h-full flex flex-col justify-start sm:justify-center items-center px-4 py-6 sm:py-0 relative overflow-y-auto select-none">
+    <div className="w-full min-h-screen flex flex-col justify-start sm:justify-center items-center px-4 py-6 sm:py-0 relative overflow-y-auto select-none">
 
       {/* TOP HEADER */}
       <div className="w-full max-w-md flex justify-between items-end mb-10 sm:mb-6 z-10 mt-1 sm:mt-4">
