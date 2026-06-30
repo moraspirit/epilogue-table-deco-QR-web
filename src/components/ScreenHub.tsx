@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   Ticket,
   Footprints,
@@ -7,16 +7,11 @@ import {
   Compass,
   Sparkles,
   ChevronRight,
+  Info,
+  X,
 } from 'lucide-react';
 import RealFireFX from './RealFireFX';
-// import { HubCard } from '../types'; // Adjust based on your types
-// import SocialLinks from './SocialLinks';
 
-interface ScreenHubProps {
-  onResetIntro: () => void;
-}
-
-// Extended type for our new colorful properties
 interface ColorfulHubCard {
   id: string;
   title: string;
@@ -24,7 +19,6 @@ interface ColorfulHubCard {
   description: string;
   ctaText: string;
   url: string;
-  // New Color Properties using standard Tailwind colors for guaranteed vibrancy
   bgGradient: string;
   borderColor: string;
   iconBg: string;
@@ -34,7 +28,35 @@ interface ColorfulHubCard {
   glowShadow: string;
 }
 
-export default function ScreenHub({ onResetIntro }: ScreenHubProps) {
+const claimInfoItems = [
+  {
+    icon: Footprints,
+    title: 'Runner Game',
+    color: 'text-cyan-400',
+    border: 'border-cyan-500/30',
+    bg: 'bg-cyan-500/10',
+    text: 'The Runner Game runs for 3 weeks. Each week, we select 1 winner—the player who finishes in 1st place on the leaderboard. A total of 3 winners will each receive a FREE Standard Ticket.',
+  },
+  {
+    icon: Brain,
+    title: 'Quiz Challenge',
+    color: 'text-violet-400',
+    border: 'border-violet-500/30',
+    bg: 'bg-violet-500/10',
+    text: 'We select 1 winner. The first player to answer all quiz questions correctly wins a FREE Standard Ticket.',
+  },
+  {
+    icon: Compass,
+    title: 'Treasure Hunt',
+    color: 'text-rose-400',
+    border: 'border-rose-500/30',
+    bg: 'bg-rose-500/10',
+    text: 'We select 1 winner. The first player to find the hidden treasure wins a FREE Standard Ticket.',
+  },
+];
+export default function ScreenHub() {
+  const [claimInfoOpen, setClaimInfoOpen] = useState(false);
+
   const cards: ColorfulHubCard[] = [
     {
       id: 'tickets',
@@ -112,7 +134,6 @@ export default function ScreenHub({ onResetIntro }: ScreenHubProps) {
     }
   };
 
-  // --- Framer Motion Variants ---
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {
@@ -123,44 +144,42 @@ export default function ScreenHub({ onResetIntro }: ScreenHubProps) {
 
   const itemVariants = {
     hidden: { opacity: 0, x: -20, scale: 0.95 },
-    show: { 
-      opacity: 1, 
-      x: 0, 
+    show: {
+      opacity: 1,
+      x: 0,
       scale: 1,
-      transition: { type: 'spring', stiffness: 300, damping: 24 }
+      transition: { type: 'spring', stiffness: 300, damping: 24 },
     },
   };
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center px-4 py-6 sm:py-10 relative overflow-x-hidden overflow-y-auto select-none bg-black">
 
-      {/* Repeating fire sweep — under cards, hub variant with 4s cycle */}
       <RealFireFX variant="hub" repeatIntervalMs={9000} />
-      
-      {/* --- COLORFUL AMBIENT BACKGROUND --- */}
+
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <motion.div 
+        <motion.div
           animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-[10%] -left-[10%] w-96 h-96 bg-emerald-600/20 rounded-full blur-[100px]" 
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute -top-[10%] -left-[10%] w-96 h-96 bg-emerald-600/20 rounded-full blur-[100px]"
         />
-        <motion.div 
+        <motion.div
           animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.4, 0.2] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="absolute top-[40%] -right-[20%] w-80 h-80 bg-violet-600/20 rounded-full blur-[100px]" 
+          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+          className="absolute top-[40%] -right-[20%] w-80 h-80 bg-violet-600/20 rounded-full blur-[100px]"
         />
-        <motion.div 
+        <motion.div
           animate={{ scale: [1, 1.4, 1], opacity: [0.2, 0.5, 0.2] }}
-          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 4 }}
-          className="absolute -bottom-[10%] left-[20%] w-[30rem] h-[30rem] bg-cyan-600/10 rounded-full blur-[120px]" 
+          transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
+          className="absolute -bottom-[10%] left-[20%] w-[30rem] h-[30rem] bg-cyan-600/10 rounded-full blur-[120px]"
         />
       </div>
 
-      {/* --- TOP HEADER --- */}
-      <motion.div 
+      {/* Header */}
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
         className="w-full max-w-sm flex justify-between items-center mb-8 z-10 pt-4"
       >
         <div>
@@ -174,15 +193,16 @@ export default function ScreenHub({ onResetIntro }: ScreenHubProps) {
         </div>
 
         <button
-          onClick={onResetIntro}
-          className="px-3 py-2 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md hover:bg-white/15 hover:border-white/30 active:scale-95 transition-all text-[10px] font-mono text-white/90 tracking-widest uppercase h-fit shadow-lg"
+          onClick={() => setClaimInfoOpen(true)}
+          className="px-3 py-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 backdrop-blur-md hover:bg-emerald-500/20 hover:border-emerald-400/50 active:scale-95 transition-all text-[10px] font-mono text-emerald-300 tracking-widest uppercase h-fit shadow-lg flex items-center gap-1.5"
         >
-          Replay
+          <Info className="w-3.5 h-3.5" />
+          Claim Info
         </button>
       </motion.div>
 
-      {/* --- MAIN CARDS LIST (Mobile Optimized 1-Column) --- */}
-      <motion.div 
+      {/* Cards */}
+      <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="show"
@@ -190,7 +210,7 @@ export default function ScreenHub({ onResetIntro }: ScreenHubProps) {
       >
         {cards.map((card) => {
           const isTicketsCard = card.id === 'tickets';
-          
+
           return (
             <motion.div
               variants={itemVariants}
@@ -198,25 +218,27 @@ export default function ScreenHub({ onResetIntro }: ScreenHubProps) {
               onClick={() => handleCardClick(card)}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
-              // Gives the primary ticket card a continuous breathing glow
-              animate={isTicketsCard ? { 
-                boxShadow: [`0px 0px 0px ${card.glowShadow}`, `0px 0px 25px ${card.glowShadow}`, `0px 0px 0px ${card.glowShadow}`] 
-              } : {}}
+              animate={
+                isTicketsCard
+                  ? {
+                      boxShadow: [
+                        `0px 0px 0px ${card.glowShadow}`,
+                        `0px 0px 25px ${card.glowShadow}`,
+                        `0px 0px 0px ${card.glowShadow}`,
+                      ],
+                    }
+                  : {}
+              }
               transition={isTicketsCard ? { repeat: Infinity, duration: 2.5 } : {}}
               className={`cursor-pointer rounded-3xl p-5 border backdrop-blur-xl transition-all duration-300 flex items-center gap-4 relative group overflow-hidden shadow-2xl bg-gradient-to-br ${card.bgGradient} ${card.borderColor}`}
             >
-              {/* Colorful Hover Flare */}
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-white/5 to-transparent pointer-events-none" />
 
-              {/* Icon Container (Left Side) */}
               <div className={`w-14 h-14 rounded-2xl shrink-0 flex items-center justify-center relative z-10 shadow-inner border ${card.iconBg}`}>
                 {renderIcon(card.iconName, `w-7 h-7 ${card.iconText}`)}
               </div>
 
-              {/* Content Container (Right Side) */}
               <div className="flex-1 min-w-0 flex flex-col justify-between relative z-10">
-                
-                {/* Title & Badge Row */}
                 <div className="flex justify-between items-start gap-2">
                   <h4 className="text-[13px] font-display font-black tracking-widest uppercase text-white truncate drop-shadow-md">
                     {card.title}
@@ -226,12 +248,10 @@ export default function ScreenHub({ onResetIntro }: ScreenHubProps) {
                   </span>
                 </div>
 
-                {/* Description */}
                 <p className="text-[12px] text-white/60 font-light leading-relaxed mt-1.5 line-clamp-2">
                   {card.description}
                 </p>
 
-                {/* CTA Row */}
                 <div className="mt-3 flex justify-between items-center text-[10px] font-mono tracking-widest font-extrabold uppercase border-t border-white/10 pt-3">
                   <span className={`group-hover:tracking-[0.2em] transition-all duration-300 ${card.ctaClass}`}>
                     {card.ctaText}
@@ -240,14 +260,13 @@ export default function ScreenHub({ onResetIntro }: ScreenHubProps) {
                     <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                   </div>
                 </div>
-
               </div>
             </motion.div>
           );
         })}
       </motion.div>
 
-      {/* Footer — fixed over fire at viewport bottom */}
+      {/* Footer */}
       <motion.footer
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -262,6 +281,90 @@ export default function ScreenHub({ onResetIntro }: ScreenHubProps) {
         </p>
       </motion.footer>
 
+      {/* Claim Info popup */}
+      <AnimatePresence>
+        {claimInfoOpen && (
+          <>
+            <motion.button
+              type="button"
+              aria-label="Close claim info"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setClaimInfoOpen(false)}
+              className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm"
+            />
+
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="claim-info-title"
+              initial={{ opacity: 0, scale: 0.92, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: 20 }}
+              transition={{ type: 'spring', stiffness: 320, damping: 28 }}
+              className="fixed inset-x-4 top-1/2 -translate-y-1/2 z-50 mx-auto max-w-sm max-h-[85dvh] overflow-y-auto rounded-3xl border border-white/15 bg-gradient-to-b from-zinc-900/95 to-black/95 backdrop-blur-xl shadow-2xl p-5 sm:p-6"
+            >
+              <div className="flex justify-between items-start mb-5">
+                <div>
+                  <p className="text-[9px] font-mono tracking-[0.25em] text-emerald-400/80 uppercase mb-1">
+                    How to win
+                  </p>
+                  <h2 id="claim-info-title" className="text-lg font-display font-black tracking-wide text-white uppercase">
+                    Claim Info
+                  </h2>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setClaimInfoOpen(false)}
+                  className="p-2 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors text-white/70"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                {claimInfoItems.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <div
+                      key={item.title}
+                      className={`rounded-2xl border p-4 ${item.border} ${item.bg}`}
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <Icon className={`w-4 h-4 ${item.color}`} />
+                        <h3 className={`text-xs font-display font-black tracking-widest uppercase ${item.color}`}>
+                          {item.title}
+                        </h3>
+                      </div>
+                      <p className="text-[11px] text-white/70 leading-relaxed font-light">
+                        {item.text}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="mt-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-4">
+                <p className="text-[9px] font-mono tracking-[0.2em] text-emerald-400/90 uppercase mb-2 font-bold">
+                  How to claim
+                </p>
+                <p className="text-[11px] text-white/75 leading-relaxed font-light">
+                  Winners will be announced on our official event flyers using their Index Number. If your Index Number is listed, please visit our stall and present your University ID to claim your FREE Standard Ticket.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setClaimInfoOpen(false)}
+                className="mt-5 w-full py-3 rounded-xl border border-emerald-500/40 bg-emerald-500/15 hover:bg-emerald-500/25 transition-colors text-[11px] font-mono font-bold tracking-widest uppercase text-emerald-300"
+              >
+                Got it
+              </button>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

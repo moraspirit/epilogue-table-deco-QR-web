@@ -53,7 +53,7 @@ export default function App() {
       case 'details': return <ScreenDetails />;
       case 'creative': return <ScreenCreative />;
       case 'teaser': return <ScreenTeaser />;
-      case 'hub': return <ScreenHub onResetIntro={handleResetIntro} />;
+      case 'hub': return <ScreenHub />;
       default: return null;
     }
   };
