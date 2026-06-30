@@ -15,11 +15,11 @@ export default function App() {
   // Smooth, continuous video-like sequence without dropping to black
   useEffect(() => {
     const sequence = [
-      { id: 'arrival', duration: 5500 },
-      { id: 'artists', duration: 2500 },
-      { id: 'details', duration: 2500 },
-      { id: 'creative', duration: 2500 },
-      { id: 'teaser', duration: 3200 },
+      { id: 'arrival', duration: 7000 },
+      { id: 'artists', duration: 4500 },
+      { id: 'details', duration: 4500 },
+      { id: 'creative', duration: 4500 },
+      { id: 'teaser', duration: 5500 },
     ];
     
     let timeout: NodeJS.Timeout;
@@ -41,10 +41,6 @@ export default function App() {
     return () => clearTimeout(timeout);
   }, [currentScreen]);
 
-  const handleResetIntro = () => {
-    setCurrentScreen('arrival');
-  };
-
   // Rendering screen with continuous overlapping transition
   const renderScreenContent = (screenId: string) => {
     switch (screenId) {
@@ -63,8 +59,8 @@ export default function App() {
       
       {/* Persistent Visualizer Background */}
       <AmbientWaves
-        intensity={currentScreen === 'teaser' ? 3.5 : 2}
-        particlesEnabled={true}
+        intensity={currentScreen === 'hub' ? 1 : currentScreen === 'teaser' ? 3.5 : 2}
+        particlesEnabled={currentScreen !== 'hub'}
         synthEnabled={synthEnabled}
         setSynthEnabled={setSynthEnabled}
       />

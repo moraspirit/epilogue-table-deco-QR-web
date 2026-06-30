@@ -66,6 +66,14 @@ const VARIANTS: Record<FireVariant, VariantConfig> = {
   },
 };
 
+const HUB_MOBILE_OVERRIDES: Partial<VariantConfig> = {
+  maxParticles: 80,
+  spawnPerFrame: 2,
+  emberSpawnPerFrame: 0,
+  sizeMin: 40,
+  sizeMax: 130,
+};
+
 export default function RealFireFX({
   variant = 'arrival',
   repeatIntervalMs = 0,
@@ -79,7 +87,12 @@ export default function RealFireFX({
     const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
-    const config = VARIANTS[variant];
+    const config = {
+      ...VARIANTS[variant],
+      ...(variant === 'hub' && window.matchMedia('(max-width: 768px)').matches ? HUB_MOBILE_OVERRIDES : {}),
+    };
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const isLowPower = isMobile || variant === 'hub';
     const isRepeating = repeatIntervalMs > 0;
 
     let particles: FlameParticle[] = [];
@@ -88,12 +101,18 @@ export default function RealFireFX({
     let cw = window.innerWidth;
     let ch = window.innerHeight;
     let lastCycle = -1;
+    let lastFrameTime = 0;
+    const frameInterval = isMobile ? 1000 / 30 : 1000 / 60;
 
     const resize = () => {
       cw = window.innerWidth;
       ch = window.innerHeight;
-      canvas.width = cw;
-      canvas.height = ch;
+      const dpr = isMobile ? 1 : Math.min(window.devicePixelRatio, 2);
+      canvas.width = Math.floor(cw * dpr);
+      canvas.height = Math.floor(ch * dpr);
+      canvas.style.width = `${cw}px`;
+      canvas.style.height = `${ch}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
     window.addEventListener('resize', resize);
@@ -113,7 +132,9 @@ export default function RealFireFX({
       return c;
     };
 
-    const fireTextures = FIRE_TEXTURE_PALETTES.map(createFireTexture);
+    const fireTextures = isMobile
+      ? [createFireTexture(FIRE_TEXTURE_PALETTES[0])]
+      : FIRE_TEXTURE_PALETTES.map(createFireTexture);
 
     type SpawnZone = 'bottom-left' | 'bottom-right' | 'bottom-center';
 
@@ -248,8 +269,10 @@ export default function RealFireFX({
         context.save();
         context.globalAlpha = opacity;
         context.fillStyle = this.color;
-        context.shadowBlur = 8;
-        context.shadowColor = this.color;
+        if (!isLowPower) {
+          context.shadowBlur = 8;
+          context.shadowColor = this.color;
+        }
         context.beginPath();
         context.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         context.fill();
@@ -271,7 +294,13 @@ export default function RealFireFX({
       return { isBursting: phase < config.burstDurationMs, cycle };
     };
 
-    const loop = () => {
+    const loop = (now: number) => {
+      if (now - lastFrameTime < frameInterval) {
+        animationFrameId = requestAnimationFrame(loop);
+        return;
+      }
+      lastFrameTime = now;
+
       ctx.globalCompositeOperation = 'source-over';
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.globalCompositeOperation = 'lighter';
@@ -320,7 +349,7 @@ export default function RealFireFX({
       animationFrameId = requestAnimationFrame(loop);
     };
 
-    loop();
+    animationFrameId = requestAnimationFrame(loop);
 
     return () => {
       window.removeEventListener('resize', resize);
@@ -336,8 +365,7 @@ export default function RealFireFX({
   return (
     <canvas
       ref={canvasRef}
-      className={`${defaultClass} ${className}`.trim()}
-      style={{ filter: 'blur(1px)' }}
+      className={`${defaultClass} blur-[1px] max-sm:blur-none ${className}`.trim()}
     />
   );
-};
+}

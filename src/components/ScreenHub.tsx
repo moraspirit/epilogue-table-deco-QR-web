@@ -56,6 +56,9 @@ const claimInfoItems = [
 ];
 export default function ScreenHub() {
   const [claimInfoOpen, setClaimInfoOpen] = useState(false);
+  const [isMobile] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches,
+  );
 
   const cards: ColorfulHubCard[] = [
     {
@@ -158,20 +161,22 @@ export default function ScreenHub() {
       <RealFireFX variant="hub" repeatIntervalMs={9000} />
 
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        {/* Static on mobile — animated blurs are costly on small devices */}
+        <div className="absolute -bottom-[10%] left-[10%] w-64 h-64 bg-emerald-600/15 rounded-full blur-[80px] sm:hidden" />
         <motion.div
           animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
           transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute -top-[10%] -left-[10%] w-96 h-96 bg-emerald-600/20 rounded-full blur-[100px]"
+          className="hidden sm:block absolute -top-[10%] -left-[10%] w-96 h-96 bg-emerald-600/20 rounded-full blur-[100px]"
         />
         <motion.div
           animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.4, 0.2] }}
           transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-          className="absolute top-[40%] -right-[20%] w-80 h-80 bg-violet-600/20 rounded-full blur-[100px]"
+          className="hidden sm:block absolute top-[40%] -right-[20%] w-80 h-80 bg-violet-600/20 rounded-full blur-[100px]"
         />
         <motion.div
           animate={{ scale: [1, 1.4, 1], opacity: [0.2, 0.5, 0.2] }}
           transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
-          className="absolute -bottom-[10%] left-[20%] w-[30rem] h-[30rem] bg-cyan-600/10 rounded-full blur-[120px]"
+          className="hidden sm:block absolute -bottom-[10%] left-[20%] w-[30rem] h-[30rem] bg-cyan-600/10 rounded-full blur-[120px]"
         />
       </div>
 
@@ -216,10 +221,10 @@ export default function ScreenHub() {
               variants={itemVariants}
               key={card.id}
               onClick={() => handleCardClick(card)}
-              whileHover={{ scale: 1.02 }}
+              whileHover={isMobile ? undefined : { scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
               animate={
-                isTicketsCard
+                isTicketsCard && !isMobile
                   ? {
                       boxShadow: [
                         `0px 0px 0px ${card.glowShadow}`,
@@ -229,8 +234,8 @@ export default function ScreenHub() {
                     }
                   : {}
               }
-              transition={isTicketsCard ? { repeat: Infinity, duration: 2.5 } : {}}
-              className={`cursor-pointer rounded-3xl p-5 border backdrop-blur-xl transition-all duration-300 flex items-center gap-4 relative group overflow-hidden shadow-2xl bg-gradient-to-br ${card.bgGradient} ${card.borderColor}`}
+              transition={isTicketsCard && !isMobile ? { repeat: Infinity, duration: 2.5 } : {}}
+              className={`cursor-pointer rounded-3xl p-5 border backdrop-blur-sm sm:backdrop-blur-xl transition-all duration-300 flex items-center gap-4 relative group overflow-hidden shadow-2xl bg-gradient-to-br ${card.bgGradient} ${card.borderColor} ${isTicketsCard && isMobile ? 'shadow-[0_0_18px_rgba(52,211,153,0.18)]' : ''}`}
             >
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-white/5 to-transparent pointer-events-none" />
 
@@ -292,7 +297,7 @@ export default function ScreenHub() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setClaimInfoOpen(false)}
-              className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm"
+              className="fixed inset-0 z-50 bg-black/70 max-sm:bg-black/80 sm:backdrop-blur-sm"
             />
 
             <motion.div
