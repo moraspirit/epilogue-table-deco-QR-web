@@ -202,7 +202,7 @@ export default function ScreenHub() {
           className="px-3 py-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 backdrop-blur-md hover:bg-emerald-500/20 hover:border-emerald-400/50 active:scale-95 transition-all text-[10px] font-mono text-emerald-300 tracking-widest uppercase h-fit shadow-lg flex items-center gap-1.5"
         >
           <Info className="w-3.5 h-3.5" />
-          Claim Info
+          Info
         </button>
       </motion.div>
 
@@ -286,13 +286,13 @@ export default function ScreenHub() {
         </p>
       </motion.footer>
 
-      {/* Claim Info popup */}
+      {/* Info popup */}
       <AnimatePresence>
         {claimInfoOpen && (
           <>
             <motion.button
               type="button"
-              aria-label="Close claim info"
+              aria-label="Close info"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -303,7 +303,7 @@ export default function ScreenHub() {
             <motion.div
               role="dialog"
               aria-modal="true"
-              aria-labelledby="claim-info-title"
+              aria-labelledby="info-title"
               initial={{ opacity: 0, scale: 0.92, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.92, y: 20 }}
@@ -315,8 +315,8 @@ export default function ScreenHub() {
                   <p className="text-[9px] font-mono tracking-[0.25em] text-emerald-400/80 uppercase mb-1">
                     How to win
                   </p>
-                  <h2 id="claim-info-title" className="text-lg font-display font-black tracking-wide text-white uppercase">
-                    Claim Info
+                  <h2 id="info-title" className="text-lg font-display font-black tracking-wide text-white uppercase">
+                    Info
                   </h2>
                 </div>
                 <button
@@ -357,6 +357,28 @@ export default function ScreenHub() {
                 <p className="text-[11px] text-white/75 leading-relaxed font-light">
                   Winners will be announced on our official event flyers using their Index Number. If your Index Number is listed, please visit our stall and present your University ID to claim your FREE Standard Ticket.
                 </p>
+              </div>
+
+              <div className="mt-4 rounded-2xl border border-white/15 bg-white/5 p-4">
+                <p className="text-[9px] font-mono tracking-[0.2em] text-white/60 uppercase mb-3 font-bold">
+                  Contact
+                </p>
+                <div className="flex flex-col gap-2.5">
+                  <a
+                    href="tel:0704587592"
+                    className="flex justify-between items-center text-[11px] font-light text-white/80 hover:text-white transition-colors"
+                  >
+                    <span>Nayomi</span>
+                    <span className="font-mono tracking-wide text-emerald-400/90">070 458 7592</span>
+                  </a>
+                  <a
+                    href="tel:0760858499"
+                    className="flex justify-between items-center text-[11px] font-light text-white/80 hover:text-white transition-colors"
+                  >
+                    <span>Sangeeth</span>
+                    <span className="font-mono tracking-wide text-emerald-400/90">076 085 8499</span>
+                  </a>
+                </div>
               </div>
 
               <button
