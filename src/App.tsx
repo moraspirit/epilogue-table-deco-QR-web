@@ -5,9 +5,8 @@ import AmbientWaves from './components/AmbientWaves';
 import ScreenArrival from './components/ScreenArrival';
 import ScreenArtists from './components/ScreenArtists';
 import ScreenDetails from './components/ScreenDetails';
-import ScreenCreative from './components/ScreenCreative';
-import ScreenTeaser from './components/ScreenTeaser';
 import ScreenHub from './components/ScreenHub';
+
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<ScreenId>('arrival');
   const [synthEnabled, setSynthEnabled] = useState(false);
@@ -15,11 +14,9 @@ export default function App() {
   // Smooth, continuous video-like sequence without dropping to black
   useEffect(() => {
     const sequence = [
-      { id: 'arrival', duration: 7000 },
-      { id: 'artists', duration: 4500 },
-      { id: 'details', duration: 4500 },
-      { id: 'creative', duration: 4500 },
-      { id: 'teaser', duration: 5500 },
+      { id: 'arrival', duration: 3500 },
+      { id: 'artists', duration: 2500 },
+      { id: 'details', duration: 2500 },
     ];
     
     let timeout: NodeJS.Timeout;
@@ -47,8 +44,6 @@ export default function App() {
       case 'arrival': return <ScreenArrival />;
       case 'artists': return <ScreenArtists />;
       case 'details': return <ScreenDetails />;
-      case 'creative': return <ScreenCreative />;
-      case 'teaser': return <ScreenTeaser />;
       case 'hub': return <ScreenHub />;
       default: return null;
     }
@@ -59,7 +54,7 @@ export default function App() {
       
       {/* Persistent Visualizer Background */}
       <AmbientWaves
-        intensity={currentScreen === 'hub' ? 1 : currentScreen === 'teaser' ? 3.5 : 2}
+        intensity={currentScreen === 'hub' ? 1 : 2}
         particlesEnabled={currentScreen !== 'hub'}
         synthEnabled={synthEnabled}
         setSynthEnabled={setSynthEnabled}
@@ -71,14 +66,14 @@ export default function App() {
       {/* Notice mode="wait" is intentionally omitted to allow simultaneous fade-in/out */}
       <div className="w-full h-full relative flex-1 z-30">
         <AnimatePresence>
-          {['arrival', 'artists', 'details', 'creative', 'teaser', 'hub'].map((screenId) => (
+          {['arrival', 'artists', 'details', 'hub'].map((screenId) => (
              currentScreen === screenId && (
               <motion.div
                 key={screenId}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 1.2, ease: "easeInOut" }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
                 className="absolute inset-0 w-full h-full"
               >
                 {renderScreenContent(screenId)}

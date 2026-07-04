@@ -1,4 +1,4 @@
-export type ScreenId = 'arrival' | 'artists' | 'details' | 'creative' | 'teaser' | 'hub';
+export type ScreenId = 'arrival' | 'artists' | 'details' | 'hub';
 
 export interface HubCard {
   id: string;
